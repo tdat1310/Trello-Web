@@ -1,77 +1,62 @@
-import { teal, deepOrange, cyan, orange } from "@mui/material/colors";
 import { experimental_extendTheme as extendTheme } from "@mui/material/styles";
 // Create a theme instance.
 const theme = extendTheme({
   trello: {
     appBarHeight: "60px",
-    boardBarHeight: '70px'
+    boardBarHeight: "70px",
   },
   colorSchemes: {
-    light: {
-      palette: {
-        primary: teal,
-        secondary: deepOrange,
-      },
-    },
-    dark: {
-      palette: {
-        primary: cyan,
-        secondary: orange,
-      },
-    },
+    light: {},
+    dark: {},
   },
   components: {
     // Name of the component
-    MuiCssBaseline:{
+    MuiCssBaseline: {
       styleOverrides: {
         body: {
-          '*::-webkit-scrollbar': {
-            width: '6px',
-            height: '6px'
+          "*::-webkit-scrollbar": {
+            width: "6px",
+            height: "6px",
           },
-          '*::-webkit-scrollbar-thumb': {
-            backgroundColor: '#bdc3c7',
-            borderRadius: '8px'
+          "*::-webkit-scrollbar-thumb": {
+            backgroundColor: "#dcdde1",
+            borderRadius: "8px",
           },
-          '*::-webkit-scrollbar-thumb:hover': {
-            backgroundColor: '#00b894'
+          "*::-webkit-scrollbar-thumb:hover": {
+            backgroundColor: "white",
           },
-        }
-      }
+        },
+      },
     },
     MuiButton: {
       styleOverrides: {
         root: {
-          textTransform: 'none',
+          textTransform: "none",
+          border: "none",
+          '&:hover': {
+            color: 'white'
+          },
+          borderWidth: '0.5px'
         },
       },
     },
     MuiInputLabel: {
       styleOverrides: {
-        root: ({theme}) => ({
-            color: theme.palette.primary.main,
-            fontSize: '0.875rem'
-        })
+        root: {
+          fontSize: "0.875rem",
+        }
       },
     },
     MuiOutlinedInput: {
       styleOverrides: {
-        root:  ({theme}) =>
-           ({
-            color: theme.palette.primary.main,
-            fontSize: '0.875rem',
-            '.MuiOutlinedInput-notcheOutline' :{
-              borderColor: theme.palette.primary.light
-            },
-            '&:hover':{
-              color: theme.palette.primary.main
-            },
-            '& fieldset': {
-              borderWidth: '1px !important'
-            }
-          }) 
-      }
-    }
+        root: {
+          fontSize: "0.875rem",
+          "& fieldset": {
+            borderWidth: "0.5px !important",
+          },
+        },
+      },
+    },
   },
   // ...other properties
 });

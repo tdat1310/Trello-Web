@@ -31,6 +31,7 @@ function Starred() {
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
           endIcon={<ExpandMoreIcon/>}
+          sx={{color: 'white'}}
         >
             <Typography sx={{fontWeight: 'bold', textTransform: 'none', fontSize: '18px'}} >Starred</Typography>
         </Button>
