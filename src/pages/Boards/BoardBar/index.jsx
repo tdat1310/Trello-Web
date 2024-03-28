@@ -78,10 +78,14 @@ function BoardBar() {
      '& .MuiAvatar-root': {
         width: '34px',
         height: '34px',
-        fontSize: 2
+        fontSize: 2,
+        cursor: 'pointer'
      }
      }}>
-      <Button variant="outlined" sx={{fontWeight: 'bold', textTransform: 'none', fontSize: '18px',bgcolor: 'white'}} startIcon={<PersonAddAltIcon/>}>Invite</Button>
+      <Button variant="outlined" 
+      sx={{fontWeight: 'bold', textTransform: 'none', fontSize: '18px', color: 'white',
+          '&:hover' : {borderColor: 'white'}
+      }} startIcon={<PersonAddAltIcon/>}>Invite</Button>
     <AvatarGroup max={5}
     sx={{
       display: "flex",
