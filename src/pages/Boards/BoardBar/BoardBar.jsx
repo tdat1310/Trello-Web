@@ -8,6 +8,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import Avatar from '@mui/material/Avatar'
 import AvatarGroup from '@mui/material/AvatarGroup'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
+import capitalizeFirstLetter from '~/utils/formatters'
 const ChipStyle = {
       color: 'white',
       bgcolor: 'transparent',
@@ -22,7 +23,7 @@ const ChipStyle = {
         bgcolor: 'primary.45'
       },
 }
-function BoardBar() {
+function BoardBar({board}) { 
   return (
     <Box
     sx={{
@@ -40,14 +41,14 @@ function BoardBar() {
     <Box sx={{display: 'flex', alignItems: 'center', gap: 2}}>
     <Chip 
     icon={<DashboardIcon />} 
-    label="DatDEV Mern Stack Board"
+    label={board?.title}
     variant="outlined" 
     clickable
     sx={ChipStyle}
     />
     <Chip 
     icon={<PublicIcon />} 
-    label="Public/Private Workspace"
+    label={capitalizeFirstLetter(board?.type)}
     variant="outlined" 
     clickable
     sx={ChipStyle}

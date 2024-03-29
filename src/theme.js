@@ -1,7 +1,7 @@
 import { experimental_extendTheme as extendTheme } from "@mui/material/styles";
 // Create a theme instance.
 const APP_BAR_HEIGHT = "60px";
-const BOARD_BAR_HEIGHT = "70PX";
+const BOARD_BAR_HEIGHT = "70px";
 const BOARD_CONTENT_HEIGHT = `calc(100vh - ${APP_BAR_HEIGHT} - ${BOARD_BAR_HEIGHT})`;
 const BOARD_CONTENT_HEADER = "50px"
 const BOARD_CONTENT_FOOTER = "56px"

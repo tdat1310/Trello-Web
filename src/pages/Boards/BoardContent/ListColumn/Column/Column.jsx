@@ -13,7 +13,8 @@ import { ContentCopy, ContentPaste } from "@mui/icons-material"
 import ArticleIcon from '@mui/icons-material/Article';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import ListCard from "./ListCard/ListCard"
-function Column() {
+import { mapOrder } from "~/utils/Sorts"
+function Column({column}) {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -22,12 +23,14 @@ function Column() {
     const handleClose = () => {
       setAnchorEl(null);
     };   
+    const cardOrders = mapOrder(column?.cards, column?.cardOrderIds, '_id')
   return (
     <Box sx={{
         minWidth: '330px',
         maxWidth: '330px',
         mx: 2,
         mt: 2,
+        pb: 1,
         borderRadius: '6px',
         bgcolor: (theme) => (theme.palette.mode == 'dark' ? '#333643' : '#ebecf0'),
          height: 'fit-content',
@@ -41,7 +44,9 @@ function Column() {
          justifyContent: 'space-between',
          p: 2
        }}>
-         <Typography sx={{fontWeight: 'bold', cursor: 'pointer', fontSize: '18px'}}>Column title</Typography>
+         <Typography sx={{fontWeight: 'bold', cursor: 'pointer', fontSize: '18px'}}>
+          {column?.title}
+          </Typography>
          <Box>
        <ExpandMoreIcon
        id="basic-button-workspace"
@@ -100,17 +105,17 @@ function Column() {
        </Menu>
      </Box>
        </Box>
-         <ListCard/>
+         <ListCard cards={cardOrders}/>
        {/* Footer box */}
        <Box sx={{
            height : (theme) => theme.trello.BOARD_CONTENT_FOOTER,
            display: "flex",
            alignItem: 'center',
            justifyContent: 'space-between',
-           py: 1,
-           px: 2
+           px: 2,
+           pt: 1
        }}>
-         <Button startIcon={<ArticleIcon/>} sx={{py: 2}}>Add new cart</Button>
+         <Button startIcon={<ArticleIcon/>} sx={{}}>Add new cart</Button>
          <Tooltip title='Drag to move'>
            <DragHandleIcon sx={{cursor: 'pointer', transform: 'translateY(8px)'}}/>
          </Tooltip>

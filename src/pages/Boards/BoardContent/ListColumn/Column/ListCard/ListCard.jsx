@@ -1,6 +1,6 @@
 import { Box } from "@mui/material"
 import Card from "./Card/Card"
-function ListCard() {
+function ListCard({cards}) {
   return (
     <Box sx={{
         display : 'flex',
@@ -17,10 +17,10 @@ function ListCard() {
           backgroundColor: "white",
         },
         maxHeight: (theme) => `calc(${theme.trello.boardContentHeight} -  
-          ${theme.trello.BOARD_CONTENT_FOOTER} - ${theme.trello.BOARD_CONTENT_HEADER} - 
-          ${theme.spacing(5)})`
+          ${theme.trello.boardContentHeader} - ${theme.trello.boardContentFooter} - 
+          ${theme.spacing(6)})`
       }}>
-        <Card/>
+        {cards.map((card)=>( <Card key={card._id} card={card}/>))}
       </Box>
   )
 }

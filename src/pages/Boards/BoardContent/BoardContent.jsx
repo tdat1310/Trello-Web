@@ -1,6 +1,8 @@
 import ListColumn from "./ListColumn/ListColumn"
 import {Box} from "@mui/material"
-function BoardContent() {
+import { mapOrder } from "~/utils/Sorts"
+function BoardContent({board}) {
+  const orderColumns = mapOrder(board?.columns, board?.columnOrderIds, '_id')
   return (
     <Box
     sx={{
@@ -10,9 +12,9 @@ function BoardContent() {
       display: 'flex',
       alignItems: 'start',
       bgcolor: (theme) => (theme.palette.mode == 'dark' ? '#34495e' : '#1976d2'),
-      py: '4px'
+      // py: '4px'
     }}>
-      <ListColumn/>
+      <ListColumn columns={orderColumns}/>
     </Box>
   )
 }

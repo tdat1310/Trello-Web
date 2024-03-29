@@ -1,7 +1,7 @@
 import { Box, Button } from "@mui/material"
 import Column from "./Column/Column"
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
-function ListColumn() {
+function ListColumn({columns}) {
   return (
     <Box sx={{
         bgcolor: 'inherit',
@@ -12,7 +12,8 @@ function ListColumn() {
         overflowY: 'hidden',
         mb: '5px'
         }}>
-            <Column/>
+          {columns.map(column=><Column key={column._id} column={column}/>)}  
+        {/* add new column button */}
         <Box sx={{
           mt: 2,
           minWidth: '200px',
