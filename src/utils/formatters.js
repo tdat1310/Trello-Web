@@ -11,14 +11,6 @@ const capitalizeFirstLetter = (val) => {
   }
   
   /**
-   * Example:
-   */
-  const stringTest = 'trungquandev'
-  const capString = capitalizeFirstLetter(stringTest)
-  
-  console.log('stringTest:', stringTest)
-  console.log('capString:', capString)
-  /**
    * Results:
    * 
    * stringTest: Of course, nothing changes =))
