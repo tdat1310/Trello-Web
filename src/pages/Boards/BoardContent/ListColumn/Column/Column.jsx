@@ -17,7 +17,7 @@ import { mapOrder } from "~/utils/Sorts"
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 function Column({column}) {
-    const {attributes, listeners, setNodeRef, transform, transition,} = useSortable({
+    const {attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({
       id: column._id,
       data: {...column}
     });
@@ -25,6 +25,8 @@ function Column({column}) {
        touchAction: 'none',
       transform: CSS.Translate.toString(transform),
       transition,
+      height: '100%',
+      opacity : isDragging ? 0.5 : undefined
     }; 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -36,10 +38,8 @@ function Column({column}) {
     };   
     const cardOrders = mapOrder(column?.cards, column?.cardOrderIds, '_id')
   return (
+    <div ref={setNodeRef} style={dndKitColumnStyles} {...attributes}>
     <Box 
-        ref={setNodeRef}
-        style={dndKitColumnStyles}
-        {...attributes}
         {...listeners}
         sx={{
           minWidth: '330px',
@@ -137,6 +137,7 @@ function Column({column}) {
          </Tooltip>
        </Box>
      </Box> 
+    </div>
   )
 }
 
