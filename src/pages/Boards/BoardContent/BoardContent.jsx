@@ -1,4 +1,4 @@
-import { DndContext, DragOverlay, MouseSensor, TouchSensor, defaultDropAnimationSideEffects, useSensor, useSensors } from "@dnd-kit/core"
+import { DndContext, DragOverlay, MouseSensor, TouchSensor, closestCorners, defaultDropAnimationSideEffects, useSensor, useSensors } from "@dnd-kit/core"
 import ListColumn from "./ListColumn/ListColumn"
 import {Box} from "@mui/material"
 import { mapOrder } from "~/utils/Sorts"
@@ -23,32 +23,61 @@ function BoardContent({board}) {
   const [activeDragItemId, setActiveDragItemId] = useState(null)
   const [activeDragItemType, setActiveDragItemType] = useState(null)
   const [activeDragItemData, setActiveDragItemData] = useState(null)
+  const [oldColumnWhenDraggingCard, setOldColumnWhenDraggingCard] = useState(null)
 
   useEffect(()=>{ 
   setOrderColumns(mapOrder(board?.columns, board?.columnOrderIds, '_id'))
   },[board])
   const handleDragEnd = (e) => {
       const {active, over} = e
-      if(activeDragItemType===ACTIVE_DRAG_ITEM_TYPE.CARD){
-        // console.log("kéo thả card tạm thời")
-        return 
-      }
       if(!active || !over) return
-      if(active.id != over.id) {
-        const oldIndex = orderColumns.findIndex(c => c._id === active.id)
-        const newIndex = orderColumns.findIndex(c => c._id === over.id)
-        const dnnOrderColumns = arrayMove(orderColumns, oldIndex, newIndex)
-        // const dnnOrderColumnsIds = dnnOrderColumns.map(c => c.id)
-        setOrderColumns(dnnOrderColumns)
+
+      if(activeDragItemType===ACTIVE_DRAG_ITEM_TYPE.CARD){
+        const {id : activeDraggingCardId, data : {current : activeDraggingCardIdData}} = active
+        const {id : overCardId} = over
+        const activeColumn = findColumnByCardId(activeDraggingCardId)
+        const overColumn = findColumnByCardId(overCardId)
+        
+        if(!activeColumn || !overColumn) return 
+
+        if(oldColumnWhenDraggingCard._id !== overColumn._id){
+            // console.log('Kéo thả card giữa 2 column khác nhau')
+        }else{
+          const oldCardIndex = oldColumnWhenDraggingCard?.cards?.findIndex(c => c._id === activeDragItemId)
+          const newCardIndex = overColumn?.cards?.findIndex(c => c._id === overCardId)
+          const dnnOrderCards = arrayMove(oldColumnWhenDraggingCard?.cards, oldCardIndex, newCardIndex)
+          setOrderColumns(prevColumns => {
+            const nextColumns = cloneDeep(prevColumns)
+            const targetColumns = nextColumns.find(column => column._id === overColumn._id)
+            targetColumns.cards = dnnOrderCards
+            targetColumns.cardOrderIds = dnnOrderCards.map(card => card._id)
+            console.log('targetColumn', targetColumns)
+            return nextColumns
+          })
+        }
+      }
+      if(activeDragItemType===ACTIVE_DRAG_ITEM_TYPE.COLUMN){
+        if(active.id != over.id) {
+          const oldColumnIndex = orderColumns.findIndex(c => c._id === active.id)
+          const newColumnIndex = orderColumns.findIndex(c => c._id === over.id)
+          const dnnOrderColumns = arrayMove(orderColumns, oldColumnIndex, newColumnIndex)
+          // const dnnOrderColumnsIds = dnnOrderColumns.map(c => c.id)
+          setOrderColumns(dnnOrderColumns)
+        }
       }
       setActiveDragItemId(null)
       setActiveDragItemType(null)
       setActiveDragItemData(null)
+      setOldColumnWhenDraggingCard(null)
   }
   const handleDragStart = (e) => {
         setActiveDragItemId(e?.active?.id)
         setActiveDragItemType(e?.active?.data?.current?.columnId ? ACTIVE_DRAG_ITEM_TYPE.CARD : ACTIVE_DRAG_ITEM_TYPE.COLUMN)
         setActiveDragItemData(e?.active?.data?.current)
+
+        if(e?.active?.data?.current?.columnId) {
+          setOldColumnWhenDraggingCard(findColumnByCardId(e?.active?.id))
+        }
   }
   const findColumnByCardId = (cardId) => {
     return orderColumns.find(column => column?.cards.map(card => card._id)?.includes(cardId))
@@ -108,6 +137,7 @@ function BoardContent({board}) {
     sensors={sensors} 
     onDragStart={handleDragStart}
     onDragOver={handleDragOver}
+    collisionDetection={closestCorners}
     >
     <Box
     sx={{
