@@ -8,7 +8,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import Avatar from '@mui/material/Avatar'
 import AvatarGroup from '@mui/material/AvatarGroup'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
-import capitalizeFirstLetter from '~/utils/formatters'
+import {capitalizeFirstLetter} from '~/utils/formatters'
 const ChipStyle = {
       color: 'white',
       bgcolor: 'transparent',

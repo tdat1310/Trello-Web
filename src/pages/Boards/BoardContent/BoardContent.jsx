@@ -6,7 +6,8 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { arrayMove } from "@dnd-kit/sortable"
 import Column from "./ListColumn/Column/Column"
 import Card from "./ListColumn/Column/ListCard/Card/Card"
-import { cloneDeep } from "lodash"
+import { cloneDeep, isEmpty } from "lodash"
+import { generatePlaceholderCard } from "~/utils/formatters"
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN : 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
   CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
@@ -57,6 +58,10 @@ function BoardContent({board}) {
       if(nextActiveColumn){
         nextActiveColumn.cards = nextActiveColumn.cards.filter(card => card._id !== activeDraggingCardId)
 
+        if(isEmpty(nextActiveColumn.cards)){
+            nextActiveColumn.cards = [generatePlaceholderCard(nextActiveColumn)]
+        }
+
         nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(card => card._id)
       }
       if(nextOverColumn){
@@ -69,6 +74,8 @@ function BoardContent({board}) {
         // console.log(rebuild_activeDraggingCardData)
         nextOverColumn.cards = nextOverColumn.cards.toSpliced(newCardIndex, 0 , rebuild_activeDraggingCardData)
         
+        nextOverColumn.cardOrderIds=nextOverColumn.cardOrderIds.filter(card => !card.FE_PlaceholderCard)
+
         nextOverColumn.cardOrderIds = nextOverColumn.cards.map(card => card._id)
       }
       return nextColumns
@@ -170,12 +177,13 @@ function BoardContent({board}) {
       return closestCorners({...args})
     }
    const pointerIntersection = pointerWithin(args)
-   const intersection = !!pointerIntersection?.length ? pointerIntersection : rectIntersection(args)
-   let overId = getFirstCollision(intersection, 'id')
+   if(!pointerIntersection?.length) return
+  //  const intersection = !!pointerIntersection?.length ? pointerIntersection : rectIntersection(args)
+   let overId = getFirstCollision(pointerIntersection, 'id')
    if(overId){
     const checkColumn = orderColumns.find(column => column._id === overId)
     if(checkColumn){
-      overId = closestCenter({
+      overId = closestCorners({
         ...args,
         droppableContainers: args.droppableContainers.filter(container => {
           return (container.id != overId) && (checkColumn?.cardOrderIds?.includes(container.id))
